@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { List, ListItem } from '@chakra-ui/react';
+import { List, ListItem, ListIcon } from '@chakra-ui/react';
+import { BiSolidCameraMovie } from 'react-icons/bi';
 
 const MoviesList = ({ movies }) => {
   const location = useLocation();
@@ -9,6 +10,7 @@ const MoviesList = ({ movies }) => {
     <List>
       {movies.map(movie => (
         <ListItem key={movie.id}>
+          <ListIcon as={BiSolidCameraMovie} color="white" />
           <Link to={`/movies/${movie.id}`} state={location}>
             {movie.title}
           </Link>
