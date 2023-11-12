@@ -1,22 +1,139 @@
-import React from 'react';
-import { useParams, Link, Outlet } from 'react-router-dom';
+import { useEffect, useState, useRef, Suspense } from 'react';
+import { useParams, useLocation, NavLink, Outlet } from 'react-router-dom';
+import {
+  Box,
+  Container,
+  Button,
+  Card,
+  Image,
+  Stack,
+  CardBody,
+  Heading,
+  Text,
+  CardFooter,
+} from '@chakra-ui/react';
+import { RiArrowGoBackLine } from 'react-icons/ri';
+import { FaMasksTheater, FaScroll } from 'react-icons/fa6';
+
+import { fetchMovieDetails } from 'services/Api';
+import Loader from 'components/Loader';
+import defaultPoster from 'images/default_poster.jpg';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
+  const location = useLocation();
+  const [movieDetails, setMovieDetails] = useState(null);
+  const goBack = useRef(location.state?.from || '/');
+
+  useEffect(() => {
+    const movieDetails = async () => {
+      try {
+        const movie = await fetchMovieDetails(movieId);
+        setMovieDetails(movie);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    movieDetails();
+  }, [movieId]);
+
+  if (!movieDetails) {
+    return <Loader />;
+  }
+
+  const userScore = Math.round(movieDetails.vote_average * 10);
+  const genresList = movieDetails?.genres?.map(genre => genre.name).join(', ');
 
   return (
-    <>
-      <div>MovieDetails {movieId}</div>
-      <ul>
-        <li>
-          <Link to="cast">Cast</Link>
-        </li>
-        <li>
-          <Link to="reviews">Reviews</Link>
-        </li>
-      </ul>
-      <Outlet />
-    </>
+    <Box as="main" w="100%" h="100%" bgColor="green.100">
+      <Container maxW="100%" p={4}>
+        <Button
+          as={NavLink}
+          to={goBack.current}
+          leftIcon={<RiArrowGoBackLine />}
+          colorScheme="green"
+          variant="solid"
+          h={10}
+          w={32}
+          mb={4}
+        >
+          Go back
+        </Button>
+        <Card
+          as="div"
+          direction={{ base: 'column', sm: 'row' }}
+          overflow="hidden"
+          variant="outline"
+          boxShadow="xl"
+        >
+          <Image
+            objectFit="cover"
+            maxW="100%"
+            maxH={480}
+            src={
+              movieDetails.poster_path === null
+                ? defaultPoster
+                : `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
+            }
+            alt={movieDetails.title}
+          />
+
+          <Stack>
+            <CardBody color="green.700">
+              <Heading as="h2" size="lg" color="green.400" mb={4}>
+                {movieDetails.title}
+              </Heading>
+              <Text py="2" fontWeight={700} mb={4}>
+                User score: {userScore}%
+              </Text>
+              <Heading size="md" color="green.500">
+                Overview
+              </Heading>
+              <Text py="2" mb={4}>
+                {movieDetails.overview}
+              </Text>
+              <Heading size="md" color="green.500">
+                Genres
+              </Heading>
+              <Text py="2">
+                {genresList !== '' ? genresList : 'No genres provided'}
+              </Text>
+            </CardBody>
+
+            <CardFooter>
+              <Button
+                as={NavLink}
+                to="cast"
+                leftIcon={<FaMasksTheater />}
+                colorScheme="green"
+                variant="solid"
+                h={10}
+                w={32}
+                mr={2}
+              >
+                Cast
+              </Button>
+              <Button
+                as={NavLink}
+                to="reviews"
+                leftIcon={<FaScroll />}
+                colorScheme="green"
+                variant="solid"
+                h={10}
+                w={32}
+              >
+                Reviews
+              </Button>
+            </CardFooter>
+          </Stack>
+        </Card>
+
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
+      </Container>
+    </Box>
   );
 };
 

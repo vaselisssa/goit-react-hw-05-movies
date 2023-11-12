@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <Box as="main" w="100%" minH="max-content" bgColor="green.100">
       <Container maxW="100%" p={4}>
-        <Heading as="h1" size="lg" color="green.400" pb={4}>
+        <Heading as="h1" size="lg" color="green.400" mb={4}>
           Trending movies:
         </Heading>
         <Box color="green.900" pl={8}>
