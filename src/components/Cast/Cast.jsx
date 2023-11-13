@@ -49,25 +49,25 @@ const Cast = () => {
         Movie Cast
       </Heading>
       <SimpleGrid minChildWidth={180} spacing={8}>
-        {cast.map(actor => (
-          <Card key={actor.id} boxShadow="dark-lg" rounded="md">
+        {cast.map(({ id, profile_path, original_name, name, character }) => (
+          <Card key={id} boxShadow="dark-lg" rounded="md">
             <Image
               src={
-                actor.profile_path === null
+                profile_path === null
                   ? defaultPhoto
-                  : `https://image.tmdb.org/t/p/w300${actor.profile_path}`
+                  : `https://image.tmdb.org/t/p/w300${profile_path}`
               }
-              alt={actor.original_name}
+              alt={original_name}
               objectFit="cover"
               h={300}
               borderTopRadius="md"
             />
             <CardBody p={4} textAlign="center">
               <Text py="1" fontSize="xs" fontWeight={700}>
-                {actor.name}
+                {name}
               </Text>
               <Text py="1" fontSize="xs">
-                Character: {actor.character}
+                Character: {character}
               </Text>
             </CardBody>
           </Card>
