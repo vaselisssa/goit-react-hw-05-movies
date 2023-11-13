@@ -47,7 +47,7 @@ const MovieDetails = () => {
   const genresList = movieDetails?.genres?.map(genre => genre.name).join(', ');
 
   return (
-    <Box as="main" w="100%" h="100%" bgColor="green.100">
+    <Box as="main" w="100%" minH="max-content" bgColor="green.100">
       <Container maxW="100%" p={4}>
         <Button
           as={NavLink}
