@@ -9,6 +9,7 @@ import {
   SimpleGrid,
   CardBody,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 
 import { fetchMovieCast } from 'services/Api';
@@ -17,6 +18,7 @@ import defaultPhoto from 'images/default_photo.jpg';
 const Cast = () => {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     const movieCast = async () => {
@@ -24,12 +26,18 @@ const Cast = () => {
         const response = await fetchMovieCast(movieId);
         setCast(response);
       } catch (error) {
-        console.error(error);
+        toast({
+          title: 'Error fetching cast',
+          description: 'Try again later',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     };
 
     movieCast();
-  }, [movieId]);
+  }, [movieId, toast]);
 
   if (!cast) {
     return;
@@ -55,10 +63,10 @@ const Cast = () => {
               borderTopRadius="md"
             />
             <CardBody p={4} textAlign="center">
-              <Text py="2" fontSize="sm" fontWeight={700}>
+              <Text py="1" fontSize="xs" fontWeight={700}>
                 {actor.name}
               </Text>
-              <Text py="2" fontSize="sm">
+              <Text py="1" fontSize="xs">
                 Character: {actor.character}
               </Text>
             </CardBody>

@@ -12,6 +12,7 @@ import {
   Heading,
   Text,
   CardFooter,
+  useToast,
 } from '@chakra-ui/react';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 import { FaMasksTheater, FaScroll } from 'react-icons/fa6';
@@ -24,6 +25,7 @@ const MovieDetails = () => {
   const { movieId } = useParams();
   const location = useLocation();
   const [movieDetails, setMovieDetails] = useState(null);
+  const toast = useToast();
   const goBack = useRef(location.state?.from || '/');
 
   useEffect(() => {
@@ -32,12 +34,18 @@ const MovieDetails = () => {
         const movie = await fetchMovieDetails(movieId);
         setMovieDetails(movie);
       } catch (error) {
-        console.error(error);
+        toast({
+          title: 'Error fetching movie',
+          description: 'Try again later',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     };
 
     movieDetails();
-  }, [movieId]);
+  }, [movieId, toast]);
 
   if (!movieDetails) {
     return <Loader />;
@@ -71,7 +79,7 @@ const MovieDetails = () => {
           <Image
             objectFit="cover"
             maxW="100%"
-            maxH={480}
+            h={400}
             src={
               movieDetails.poster_path === null
                 ? defaultPoster
@@ -81,20 +89,20 @@ const MovieDetails = () => {
           />
 
           <Stack>
-            <CardBody color="green.700">
-              <Heading as="h2" size="lg" color="green.400" mb={4}>
+            <CardBody color="green.700" pb={0}>
+              <Heading as="h2" size="md" color="green.400" mb={4}>
                 {movieDetails.title}
               </Heading>
               <Text py="2" fontWeight={700} mb={4}>
                 User score: {userScore}%
               </Text>
-              <Heading size="md" color="green.500">
+              <Heading size="sm" color="green.500">
                 Overview
               </Heading>
-              <Text py="2" mb={4}>
+              <Text py="2" mb={4} fontSize="sm">
                 {movieDetails.overview}
               </Text>
-              <Heading size="md" color="green.500">
+              <Heading size="sm" color="green.500">
                 Genres
               </Heading>
               <Text py="2">
@@ -102,7 +110,7 @@ const MovieDetails = () => {
               </Text>
             </CardBody>
 
-            <CardFooter>
+            <CardFooter pt={0}>
               <Button
                 as={NavLink}
                 to="cast"
