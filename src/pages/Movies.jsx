@@ -40,7 +40,7 @@ const Movies = () => {
       <Container maxW="100%" p={4}>
         <SearchForm />
         {movieName === '' ? (
-          <Text>Please, enter your query.</Text>
+          ''
         ) : searchMovies && searchMovies.length === 0 ? (
           <Text>
             Sorry, we have not found any movies matching your query "{movieName}

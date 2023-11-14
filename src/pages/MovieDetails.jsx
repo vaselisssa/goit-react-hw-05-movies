@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, Suspense } from 'react';
-import { useParams, useLocation, NavLink, Outlet } from 'react-router-dom';
+import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 
 import {
   Box,
@@ -48,7 +48,7 @@ const MovieDetails = () => {
   }, [movieId, toast]);
 
   if (!movieDetails) {
-    return <Loader />;
+    return;
   }
 
   const userScore = Math.round(movieDetails.vote_average * 10);
@@ -57,18 +57,21 @@ const MovieDetails = () => {
   return (
     <Box as="main" w="100%" minH="100%" bgColor="green.100">
       <Container maxW="100%" p={4}>
-        <Button
-          as={NavLink}
-          to={goBack.current}
-          leftIcon={<RiArrowGoBackLine />}
-          colorScheme="green"
-          variant="solid"
-          h={10}
-          w={32}
-          mb={4}
-        >
-          Go back
-        </Button>
+        <Link to={goBack.current}>
+          <Button
+            as="button"
+            type="button"
+            leftIcon={<RiArrowGoBackLine />}
+            colorScheme="green"
+            variant="solid"
+            h={10}
+            w={32}
+            mb={4}
+          >
+            Go back
+          </Button>
+        </Link>
+
         <Card
           as="div"
           direction={{ base: 'column', sm: 'row' }}
@@ -112,7 +115,7 @@ const MovieDetails = () => {
 
             <CardFooter pt={0}>
               <Button
-                as={NavLink}
+                as={Link}
                 to="cast"
                 leftIcon={<FaMasksTheater />}
                 colorScheme="green"
@@ -124,7 +127,7 @@ const MovieDetails = () => {
                 Cast
               </Button>
               <Button
-                as={NavLink}
+                as={Link}
                 to="reviews"
                 leftIcon={<FaScroll />}
                 colorScheme="green"
