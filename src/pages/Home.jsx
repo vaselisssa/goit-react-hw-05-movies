@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Heading } from '@chakra-ui/react';
+import { Box, Container, Heading, useToast } from '@chakra-ui/react';
 import { fetchTrendingMovies } from 'services/Api';
 import MoviesList from 'components/MoviesList';
 
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,12 +13,18 @@ const Home = () => {
         const movies = await fetchTrendingMovies();
         setTrendingMovies(movies);
       } catch (error) {
-        console.error(error);
+        toast({
+          title: 'Error fetching movie',
+          description: 'Try again later',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     };
 
     fetchData();
-  }, []);
+  }, [toast]);
 
   return (
     <Box as="main" w="100%" h="100%" bgColor="green.100">

@@ -37,18 +37,22 @@ const Reviews = () => {
       <Heading as="h2" size="lg" color="green.400" mb={4}>
         Reviews
       </Heading>
-      {reviews.map(({ id, author, content }) => (
-        <Card key={id}>
-          <CardBody>
-            <Text py="1" fontSize="xs" fontWeight={700}>
-              {author}
-            </Text>
-            <Text py="1" fontSize="xs">
-              {content}
-            </Text>
-          </CardBody>
-        </Card>
-      ))}
+      {reviews.length === 0 ? (
+        <Text>Sorry, we have not found any review.</Text>
+      ) : (
+        reviews.map(({ id, author, content }) => (
+          <Card key={id}>
+            <CardBody>
+              <Text py="1" fontSize="xs" fontWeight={700}>
+                {author}
+              </Text>
+              <Text py="1" fontSize="xs">
+                {content}
+              </Text>
+            </CardBody>
+          </Card>
+        ))
+      )}
     </Box>
   );
 };
