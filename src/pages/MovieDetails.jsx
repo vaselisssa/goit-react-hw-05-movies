@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 
 import {
@@ -26,7 +26,6 @@ const MovieDetails = () => {
   const location = useLocation();
   const [movieDetails, setMovieDetails] = useState(null);
   const toast = useToast();
-  const goBack = useRef(location.state?.from || '/');
 
   useEffect(() => {
     const movieDetails = async () => {
@@ -57,7 +56,7 @@ const MovieDetails = () => {
   return (
     <Box as="main" w="100%" minH="100%" bgColor="green.100">
       <Container maxW="100%" p={4}>
-        <Link to={goBack.current}>
+        <Link to={location.state}>
           <Button
             as="button"
             type="button"
