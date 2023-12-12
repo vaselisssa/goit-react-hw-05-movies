@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 
 import {
@@ -23,8 +23,9 @@ import defaultPoster from 'images/default_poster.jpg';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
-  const location = useLocation();
   const [movieDetails, setMovieDetails] = useState(null);
+  const location = useLocation();
+  const backLinkHref = useRef(location.state || '/');
   const toast = useToast();
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const MovieDetails = () => {
   return (
     <Box as="main" w="100%" minH="100%" bgColor="green.100">
       <Container maxW="100%" p={4}>
-        <Link to={location.state}>
+        <Link to={backLinkHref.current}>
           <Button
             as="button"
             type="button"
